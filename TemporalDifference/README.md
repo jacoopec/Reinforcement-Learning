@@ -1,5 +1,9 @@
 ## Temporal-Difference Learning
 
+Il TD target dipende da una sola transizione, una sola azione e un solo reward quindi ha varianza inferiore
+al ritorno finale e impara in meno tempo
+
+
 Aggiorno il valore passo dopo passo, senza aspettare la fine dell’episodio.
 
 La forma tipica è: $V(s)←V(s)+α[r+γV(s′)−V(s)]$
@@ -55,6 +59,9 @@ TD(λ) mixes 1-step and multi-step updates using eligibility traces:
 
 λ→1 → closer to Monte Carlo behavior
 This is the “bridge” between TD and MC.
+
+
+
 
 TD control (learning how to act)
 

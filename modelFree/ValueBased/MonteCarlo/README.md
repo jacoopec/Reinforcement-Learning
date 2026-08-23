@@ -7,6 +7,12 @@ MC is:
  - Monte Carlo RL learns values from complete sampled episodes, without needing to know the environment's transition model.
 
 ---
+###  MonteCarlo
+The return is given by the sum  of th rewards divided by the number of states
+MC si basa sul ritorno finale che ha molta varianza perch´e dipende da tante transizioni, azioni, rewards
+quindi per avere una stima corretta ho bisogno di tantissimi episodi
+
+---
 # Monte Carlo control
 >Monte Carlo control is a reinforcement learning method used to learn a policy, not just estimate state values.
 The idea is:

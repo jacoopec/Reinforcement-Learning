@@ -21,3 +21,62 @@ What if we approximate them using neural networks?
 In deep Q learning, we utilize a neural network to approximate the Q value function. The network receives the state as an input (whether is the frame of the current state or a single value) and outputs the Q values for all possible actions. The biggest output is our next action. We can see that we are not constrained to Fully Connected Neural Networks, but we can use Convolutional, Recurrent and whatever else type of model suits our needs.
 
 
+### Q-learning
+
+Nel Q-learning, la regola di aggiornamento è:
+$Q(s,a)←Q(s,a)+α[r+γa′max	​Q(s′,a′)−Q(s,a)]$
+
+Dove:
+$r+γa′maxQ(s′,a′)$
+
+è il target di Bellman.
+
+La differenza:
+$r+γa′maxQ(s′,a′)−Q(s,a)$
+si chiama TD error, cioè errore di temporal difference.
+
+Il Q-learning è un algoritmo di Reinforcement Learning che serve a imparare quale azione conviene fare in ogni stato, anche senza conoscere in anticipo il modello dell’ambiente.
+
+L’idea è imparare una tabella o funzione:
+
+Q(s,a)
+
+che significa:
+
+quanto è buona l’azione a quando mi trovo nello stato s.
+
+####  Cosa impara il Q-learning?
+
+Impara la Q-function ottimale:
+$Q∗(s,a)$
+
+cioè il valore migliore possibile associato a ogni coppia stato-azione.
+Una volta imparata questa funzione, la policy ottimale è semplice:
+$π(s)=argamax​Q(s,a)$
+nello stato s, scegli l’azione con il valore Q più alto.
+
+
+Il Q-learning funziona così:
+
+L’agente si trova in uno stato.
+Sceglie un’azione.
+Riceve una ricompensa.
+Finisce in un nuovo stato.
+Aggiorna il valore Q(s,a).
+Ripete molte volte.
+
+Con l’esperienza, i valori Q diventano sempre più accurati.
+
+Il Q-learning è un algoritmo off-policy.
+
+Vuol dire che può esplorare usando una strategia, per esempio casuale o ϵ-greedy, ma aggiorna i valori assumendo di seguire la miglior azione futura:
+$a′max​Q(s′,a′)$
+Quindi impara la policy ottimale anche mentre si comporta in modo esplorativo.
+
+Il Q-learning è un metodo per imparare una funzione Q(s,a), che dice quanto conviene fare una certa azione in un certo stato.
+
+La regola fondamentale è:
+
+nuovo valore=vecchio valore+α⋅errore
+
+cioè l’agente corregge gradualmente le sue stime in base all’esperienza.

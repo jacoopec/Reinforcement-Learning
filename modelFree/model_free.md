@@ -1,24 +1,21 @@
-Model-free prediction
+# Model-free prediction
 
 Qui l’obiettivo non è ancora trovare la policy migliore.
-L’obiettivo è:
-data una policy, stimare quanto è buona.
+>L’obiettivo è: data una policy -> stimare quanto è buona.
+
 Cioè: l’agente segue una certa politica di comportamento, ad esempio:
-in ogni stato, scegli l’azione secondo π
-e vuole stimare la funzione di valore:
-$Vπ(s)$
-oppure:
-$Qπ(s,a)$
+in ogni stato, scegli l’azione secondo π e vuole stimare la funzione di valore:
+$Vπ(s)$ oppure: $Qπ(s,a)$
 
 quanto valore mi aspetto di ottenere partendo da questo stato, o da questa coppia stato-azione, seguendo la policy π?
 
 In una griglia, se seguo sempre una certa policy, voglio capire:
 
-quanto è buono trovarmi nella cella (1,2)?
+`quanto è buono trovarmi nella cella (1,2)?`
 
 oppure:
 
-quanto è buono fare "destra" dalla cella (1,2)?
+`quanto è buono fare "destra" dalla cella (1,2)?`
 
 ## Monte Carlo Learning
 
@@ -34,11 +31,7 @@ uso questa ricompensa per aggiornare V(s)
 
 Monte Carlo quindi aggiorna dopo aver visto un episodio completo.
 
-## Temporal-Difference Learning
 
-Aggiorno il valore passo dopo passo, senza aspettare la fine dell’episodio.
-
-La forma tipica è: $V(s)←V(s)+α[r+γV(s′)−V(s)]$
 
 ## Model-free control
 

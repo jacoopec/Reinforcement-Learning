@@ -1,3 +1,187 @@
+# Reinforcement learning
+
+Reinforcement Learning (RL) agents learn to make decisions by interacting with an environment and maximizing cumulative reward. Different types of RL agents are categorized based on how they represent knowledge and learn optimal behavior.
+
+Reinforcement learning agents can be categorized based on how they learn:
+
+ - **Value-based** → learn “how good” states/actions are
+ - **Policy-based** → learn “what to do” directly
+ - **Actor–Critic** → combine both approaches
+ - **Model-based vs Model-free** → differ in use of environment knowledge
+
+
+>In practice, when someone describes an RL algorithm, a good set of questions is: Does it learn a model? Does it learn values or a policy? Is it on- or off-policy? Does it use MC or TD updates? Is learning online or offline?
+
+
+Reinforcement Learning
+│
+├── Model-based RL
+│   ├── Known environment model
+│   │   └── Dynamic Programming
+│   │
+│   └── Learned environment model
+│       ├── Dyna
+│       ├── MuZero
+│       └── Dreamer
+│
+└── Model-free RL
+    │
+    ├── Value-based
+    │   ├── Monte Carlo Control
+    │   ├── SARSA
+    │   ├── Q-learning
+    │   └── DQN
+    │
+    ├── Policy-based
+    │   └── REINFORCE
+    │
+    └── Actor-Critic
+        ├── A2C
+        ├── PPO
+        ├── DDPG
+        ├── TD3
+        └── SAC
+
+| Method              | Model           | Main type                  | Update               | Policy          |
+| ------------------- | --------------- | -------------------------- | -------------------- | --------------- |
+| Monte Carlo Control | Model-free      | Value-based                | MC                   | On/Off          |
+| SARSA               | Model-free      | Value-based                | TD                   | On-policy       |
+| Q-learning          | Model-free      | Value-based                | TD                   | Off-policy      |
+| DQN                 | Model-free      | Value-based                | TD                   | Off-policy      |
+| REINFORCE           | Model-free      | Policy-based               | MC                   | On-policy       |
+| PPO                 | Model-free      | Actor-Critic               | TD/GAE               | On-policy       |
+| SAC                 | Model-free      | Actor-Critic               | TD                   | Off-policy      |
+| DreamerV3           | **Model-based** | Actor-Critic + World Model | TD/imagined rollouts | Off-policy-like |
+---
+
+## On-policy vs. Off-policy
+
+This classification asks whether the algorithm learns from the same policy that generated the data.
+
+On-policy:
+
+behavior policy=policy being learned
+
+Examples:
+
+SARSA
+REINFORCE
+PPO
+On-policy Monte Carlo
+
+Off-policy:
+
+behavior policy
+
+=target policy
+
+Examples:
+
+Q-learning
+DQN
+DDPG
+SAC
+Off-policy Monte Carlo
+
+This is why algorithms such as DQN and SAC can effectively use a replay buffer containing older experiences.
+---
+## Monte Carlo vs. Temporal Difference
+
+Another important distinction concerns how value estimates are updated.
+
+Monte Carlo waits until the return is observed:
+Gt	​=Rt+1	​+γRt+2	​+γ2Rt+3	​+⋯Then:V(St	​)←V(St	​)+α(Gt	​−V(St	​))
+
+Examples:
+
+ -MC Prediction
+ -MC Control
+ -REINFORCE
+
+Temporal Difference (TD) bootstraps from another estimate:
+
+$$V(St	​)←V(St	​)+α[Rt+1	​+γV(St+1	​)−V(St	​)]$$
+
+Examples:
+
+ - TD(0)
+ - SARSA
+ - Q-learning
+ - DQN
+
+---
+
+## Tabular vs. Function Approximation
+
+Tabular RL stores values explicitly: $Q(s,a)$ for every state-action combination.
+
+Examples:
+
+ - Tabular Q-learning
+ - Tabular SARSA
+ - Tabular Monte Carlo
+
+It works well when the state space is small.
+
+Function approximation represents values or policies with a parameterized function:
+
+Qθ​(s,a) or πθ(a∣s)
+
+When the function is a neural network, we usually talk about Deep Reinforcement Learning.
+
+Examples:
+
+DQN
+PPO
+SAC
+Dreamer
+
+---
+
+## Online vs. Offline RL
+
+Online RL allows the agent to interact with the environment while learning:
+
+s
+t
+	​
+
+→a
+t
+	​
+
+→r
+t
+	​
+
+,s
+t+1
+	​
+
+
+Examples:
+
+Q-learning during environment interaction
+PPO
+SAC
+
+Offline RL trains entirely from an existing dataset:
+
+D={(s,a,r,s
+′
+)}
+
+without further environment interaction.
+
+Examples:
+
+CQL
+IQL
+Decision Transformer
+
+This distinction is particularly important in robotics, autonomous driving, and embodied AI because collecting new interactions can be expensive or dangerous.
+---
+
 ### Reward
 ### episode
 sequence of steps come to end.
@@ -5,36 +189,36 @@ At each step:
  - the agent: receives a reward and an observation, emits an action
  - the environment: receives an action, emits a reward and an observation
 
-# History
+### History
 An agent will have  a sequence of observation, reward,  action
 
-# State
+### State
 Information used to decide the next action and the reward
 
-# Policy
+### Policy
 Decides  the agent's bhaviour and maps states to actions.
 
-# State value function
+### State value function
 expected return  being in state s and following policy pi.
 
-# Action valu function 
+### Action valu function 
 expected return  being in state s, taking action a and following policy pi.
 
-#  Model
+###  Model
 It explicitly describeshow the environment works.
 
-# Model-free prediction methods
+### Model-free prediction methods
 They estimate the valu function given a policy in a non-observable environment
 - montecarlo learning
 - temporal diff learning
 
 
 
-# Markov decision processes 
+### Markov decision processes 
 formally deescribe an environment for reinforcement learning
 
 
-# L’equazione di Bellman 
+### L’equazione di Bellman 
 nel Reinforcement Learning descrive il valore di uno stato come:
 
 ricompensa immediata + valore atteso degli stati futuri
@@ -68,185 +252,107 @@ $Qπ(s,a)=s′∑​P(s′∣s,a)[R(s,a,s′)+γa′∑​π(a′∣s′)Qπ(s�
 Quando vogliamo trovare la policy migliore, non usiamo più una policy fissata π, ma scegliamo sempre l’azione migliore.
 
 Per la value function ottimale:
-$V∗(s)=amax​s′∑​P(s′∣s,a)[R(s,a,s′)+γV∗(s′)]$
+$$V∗(s)=amax​s′∑​P(s′∣s,a)[R(s,a,s′)+γV∗(s′)]$$
 Per la Q-function ottimale:
-$Q∗(s,a)=s′∑​P(s′∣s,a)[R(s,a,s′)+γa′max​Q∗(s′,a′)]$
+$$Q∗(s,a)=s′∑​P(s′∣s,a)[R(s,a,s′)+γa′max​Q∗(s′,a′)]$$
 Questa è la base di algoritmi come Q-learning.
 
----
-###  MonteCarlo
-The return is given by the sum  of th rewards divided by the number of states
-MC si basa sul ritorno finale che ha molta varianza perch´e dipende da tante transizioni, azioni, rewards
-quindi per avere una stima corretta ho bisogno di tantissimi episodi
+
 
 ---
-### Temporal difference
-Il TD target dipende da una sola transizione, una sola azione e un solo reward quindi ha varianza inferiore
-al ritorno finale e impara in meno tempo
 
----
-### Model-free control
-Not estimate but evaluate a policy 
+# Agent categories:
 
-• On-Policy Monte-Carlo Control
-• On-Policy Temporal-Difference Control (SARSA)
-• Off-Policy Learning (Q-learning)
+## Value-Based Agents
 
-2 ways  to estimate a policy are state value funtction and action-value function
-it is possible to improve the policy from the value function by acting greedily:
-$$π′ = greedy(vπ)$$
-I choose the policy which maximizes the reward.
-Nei contesti model-free abbiamo a disposizione solo Q(s, a) perch´e per essere greedy rispetto alla state-value
-function ho bisogno del modello e in particolare sapere quale azione mi porta in quale stato (probabilit`a di
-transizione).
+Value-based agents learn a value function, which estimates how good a state or action is.
 
-Per i metodi di model-free control abbiamo in generale due possibilit`a:
-• On-policy learning: impara la policy migliore basandosi sui suoi episodi
-• Off-policy learning: impara la policy migliore basandosi su episodi di un’altra policy
+State value $V(s)$
+Action value $Q(s,a)$
 
+The policy is derived by choosing the action with the highest value.
 
------------
-### Q-learning
-
-Nel Q-learning, la regola di aggiornamento è:
-$Q(s,a)←Q(s,a)+α[r+γa′max	​Q(s′,a′)−Q(s,a)]$
-
-Dove:
-$r+γa′maxQ(s′,a′)$
-
-è il target di Bellman.
-
-La differenza:
-$r+γa′maxQ(s′,a′)−Q(s,a)$
-si chiama TD error, cioè errore di temporal difference.
-
-Il Q-learning è un algoritmo di Reinforcement Learning che serve a imparare quale azione conviene fare in ogni stato, anche senza conoscere in anticipo il modello dell’ambiente.
-
-L’idea è imparare una tabella o funzione:
-
-Q(s,a)
-
-che significa:
-
-quanto è buona l’azione a quando mi trovo nello stato s.
-
-####  Cosa impara il Q-learning?
-
-Impara la Q-function ottimale:
-$Q∗(s,a)$
-
-cioè il valore migliore possibile associato a ogni coppia stato-azione.
-Una volta imparata questa funzione, la policy ottimale è semplice:
-$π(s)=argamax​Q(s,a)$
-nello stato s, scegli l’azione con il valore Q più alto.
+Examples:
+ - Q-learning
+ - SARSA
+ - Deep Q-Network (DQN)
+Characteristics:
+ - Works well for discrete action spaces
+ - Simple and stable
+ - Indirectly learns policy
+ - Limitations
+ - Struggles with continuous actions
+ - Can be inefficient in large state spaces
 
 
-Il Q-learning funziona così:
+--------------------
 
-L’agente si trova in uno stato.
-Sceglie un’azione.
-Riceve una ricompensa.
-Finisce in un nuovo stato.
-Aggiorna il valore Q(s,a).
-Ripete molte volte.
+## Policy-based agents 
 
-Con l’esperienza, i valori Q diventano sempre più accurati.
+directly learn a policy function:  π(a∣s)
+This maps states directly to actions.
 
-Il Q-learning è un algoritmo off-policy.
+Examples:
+REINFORCE (Monte Carlo policy gradient)
+Characteristics:
+ - Suitable for continuous action spaces
+ - Can learn stochastic policies
+ - Direct optimization of behavior
+ - Limitations
+ - High variance in learning
+ - Can be unstable without improvements
 
-Vuol dire che può esplorare usando una strategia, per esempio casuale o ϵ-greedy, ma aggiorna i valori assumendo di seguire la miglior azione futura:
-$a′max​Q(s′,a′)$
-Quindi impara la policy ottimale anche mentre si comporta in modo esplorativo.
+--------------------
 
-Il Q-learning è un metodo per imparare una funzione Q(s,a), che dice quanto conviene fare una certa azione in un certo stato.
+## Actor–Critic Agents
+Definition
 
-La regola fondamentale è:
+>Actor–Critic methods combine value-based and policy-based approaches:
 
-nuovo valore=vecchio valore+α⋅errore
+**Actor**: decides actions (policy)
+**Critic**: evaluates actions (value function)
+Examples:
+ - A2C (Advantage Actor-Critic)
+ - A3C
+ - DDPG
+ - PPO
+Characteristics
+ - More stable than pure policy methods
+ - Efficient learning
+ - Handles both discrete and continuous spaces
+ - Limitations
+ - More complex to implement
+ - Requires careful tuning
 
-cioè l’agente corregge gradualmente le sue stime in base all’esperienza.
+--------------------
 
-----------------------
+## Model-Based vs Model-Free Agents
+Model-Free RL
+No knowledge of environment dynamics
+Learns from experience only
 
-### SARSA On policy Temporal Difference Control
-è un algoritmo di Reinforcement Learning molto simile al Q-learning, ma con una differenza importante:
+Examples:
 
-SARSA aggiorna Q(s,a) usando l’azione che l’agente sceglierà davvero nel prossimo stato.
+ - Q-learning
+ - DQN
+ - PPO
+ - Model-Based RL
+ - Uses or learns a model of environment transitions
+Can plan ahead
 
-Il nome SARSA viene dalla sequenza: $S,A,R,S′,A′$
+Examples:
 
-La formula di SARSA è:
-$Q(s,a)←Q(s,a)+α[r+γQ(s′,a′)−Q(s,a)]$
-
-SARSA confronta: $Q(s,a)$ cioè il valore stimato attuale, con $r+γQ(s′,a′)$
-
-Quindi SARSA corregge Q(s,a) usando l’esperienza appena osservata.
-
-####  Differenza tra SARSA e Q-learning
-
-La differenza principale è nel termine futuro.
-Q-learning:
-$Q(s,a)←Q(s,a)+α[r+γa′max​Q(s′,a′)−Q(s,a)]$
-Q-learning usa:
-$max​Q(s′,a′)$
-cioè assume che nel prossimo stato verrà scelta l’azione migliore possibile.
-
-SARSA usa:
-Q(s′,a′)
-cioè il valore dell’azione che la policy sceglie davvero.
-
-SARSA è un algoritmo on-policy.
-
-Significa che impara il valore della stessa policy che sta usando per agire.
-
-Per esempio, se l’agente usa una strategia ϵ-greedy, ogni tanto fa azioni casuali per esplorare. SARSA tiene conto anche di queste azioni esplorative nell’aggiornamento.
-
-Q-learning invece è off-policy, perché aggiorna sempre assumendo la migliore azione futura, anche se nella pratica l’agente potrebbe non sceglierla.
-
-
-SARSA e Q-learning sono entrambi algoritmi model-free.
-
-Significa che non hanno bisogno di conoscere il modello dell’ambiente, cioè non richiedono esplicitamente: $P(s′∣s,a)$ nè $R(s,a,s′)$
-
-L’agente impara direttamente dall’esperienza, osservando transizioni del tipo:
-
-(s,a,r,s′)   nel q-learning
-oppure, nel caso di SARSA:
-(s,a,r,s′,a′)
-
-SARSA è:
-
-model-free
-on-policy
-value-based
-TD learning
-
-È model-free perché aggiorna Q(s,a) usando esperienze osservate, senza conoscere le probabilità di transizione.
-
-Q-learning è:
-
-model-free
-off-policy
-value-based
-TD learning
-
-Expected SARSA è:
-
-model-free
-value-based
-TD learning
-on-policy
-
-se la policy usata per calcolare l’aspettazione è la stessa policy usata dall’agente per agire, per esempio ϵ-greedy.
-
-può anche essere usato in versione off-policy, se l’agente esplora con una policy ma calcola l’aspettazione rispetto a un’altra policy target.
+ - Value Iteration
+ - Policy Iteration
+ - Dyna-Q
 
 
-###  Expected SARSA aggiorna così:
-$Q(s,a)←Q(s,a)+α[r+γa′∑​π(a′∣s′)Q(s′,a′)−Q(s,a)]$
 
-$a′∑​π(a′∣s′)Q(s′,a′)$
-media pesata dei valori Q delle azioni possibili nello stato successivo
-La media è pesata dalla policy π.
 
-La differenza principale è che Expected SARSA sostituisce la singola azione futura con una media pesata su tutte le azioni possibili.
+A value-based agent in reinforcement learning is one that learns a value function (like V(s) or Q(s,a)) and derives its policy from that—rather than learning the policy directly.
+
+These methods work best in problems with:
+
+ - discrete or manageable state/action spaces
+ - clear reward signals
+ - need for optimal decision sequences
