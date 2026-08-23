@@ -1,0 +1,19 @@
+Temporal difference can learn before  knowing the final outcome.
+Temp diff can learn online after every step
+MC must wait until end of episode before the return is known  
+Temp diff can learn without the final outcome 
+Temp diff can learn from incomplete sequences.
+Monte carlo can only learn form complete sequences.
+Temp diff works in continuing non-terminating environments.
+MC only works for episodic teminating environmetns.
+
+Bias-variance trade-off 
+Return Gt= Rt + gamma*Rt+1 + 
+
+Temporal difference target is much lower variance than the return 
+
+MC has high variance and zero bias: good convergence properties, it is not very sensitive to initial
+value, it is  very simple to understand and use.
+
+TD has low variance, some bias: It is usually more efficient than MC
+
